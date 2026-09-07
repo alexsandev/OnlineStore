@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using OnlineStore.Infrastructure.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<OnlineStoreDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"));
+});
 
 var app = builder.Build();
 
