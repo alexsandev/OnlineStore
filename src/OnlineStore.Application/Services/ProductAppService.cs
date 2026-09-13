@@ -6,7 +6,7 @@ using OnlineStore.Domain.Interfaces;
 
 namespace OnlineStore.Application.Services
 {
-    internal class ProductAppService : IProductAppService
+    public class ProductAppService : IProductAppService
     {
         private readonly IRepository<Product> _repository;
 
