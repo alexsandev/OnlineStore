@@ -5,7 +5,7 @@ using OnlineStore.Infrastructure.Context;
 
 namespace OnlineStore.Infrastructure.Repositories
 {
-    internal class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly OnlineStoreDbContext _context;
 
@@ -16,7 +16,8 @@ namespace OnlineStore.Infrastructure.Repositories
 
         public async Task AddAsync(T entity, CancellationToken ct = default)
         {
-            await _context.Set<T>().AddAsync(entity, ct);
+            _context.Set<T>().Add(entity);
+            await _context.SaveChangesAsync(ct);
         }
 
         public async Task DeleteAsync(long id, CancellationToken ct = default)
