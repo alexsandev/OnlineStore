@@ -1,0 +1,38 @@
+﻿@page
+@model OnlineStore.Webapp.Pages.Products.CreateModel
+@{
+}
+
+<section>
+    <h2>Create Product</h2>
+    <br/>
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="Input.Name"></label>
+            <input asp-for="Input.Name" class="form-control" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.ShortDescription"></label>
+            <input asp-for="Input.ShortDescription" class="form-control" />
+            <span asp-validation-for="Input.ShortDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Description"></label>
+            <textarea asp-for="Input.Description" class="form-control"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Price"></label>
+            <input asp-for="Input.Price" class="form-control" />
+            <span asp-validation-for="Input.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Stock"></label>
+            <input asp-for="Input.Stock" class="form-control" />
+            <span asp-validation-for="Input.Stock" class="text-danger"></span>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</section>
