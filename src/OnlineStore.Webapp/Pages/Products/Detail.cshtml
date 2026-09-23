@@ -1,0 +1,139 @@
+﻿@page "{id:long}"
+@model OnlineStore.Webapp.Pages.Products.DetailModel
+@{
+    var product = Model.Product;
+    ViewData["Title"] = product.Name;
+}
+
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb para navegação -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Início</a></li>
+            <li class="breadcrumb-item"><a asp-page="/Products/Index">Produtos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@product.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row gx-5 mt-4">
+        <!-- Coluna Esquerda: Galeria de Imagens -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <!-- Imagem Principal -->
+            <div class="card border-0 shadow-sm mb-3">
+                @if (!string.IsNullOrEmpty(product.MainImageUrl))
+                {
+                    <img id="mainProductImage" src="@product.MainImageUrl" class="card-img-top rounded" alt="Imagem do produto @product.Name" style="object-fit: cover; max-height: 500px; width: 100%;" />
+                }
+                else
+                {
+                    <!-- Placeholder caso não tenha imagem -->
+                    <div class="bg-light d-flex justify-content-center align-items-center rounded" style="height: 400px; width: 100%;">
+                        <span class="text-muted fs-4">Sem imagem disponível</span>
+                    </div>
+                }
+            </div>
+            
+            <!-- Miniaturas (Thumbnails) -->
+            @if (product.ImagesUrls != null && product.ImagesUrls.Any())
+            {
+                <div class="d-flex gap-2 overflow-auto py-2">
+                    <!-- Inclui a imagem principal na lista de miniaturas -->
+                    @if (!string.IsNullOrEmpty(product.MainImageUrl))
+                    {
+                        <img src="@product.MainImageUrl" class="img-thumbnail cursor-pointer" alt="Miniatura Principal" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" onclick="changeMainImage('@product.MainImageUrl')" />
+                    }
+
+                    <!-- Lista as demais imagens -->
+                    @foreach (var imgUrl in product.ImagesUrls)
+                    {
+                        <img src="@imgUrl" class="img-thumbnail cursor-pointer" alt="Miniatura" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" onclick="changeMainImage('@imgUrl')" />
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Coluna Direita: Informações do Produto -->
+        <div class="col-lg-6">
+            <!-- Categorias -->
+            @if (product.Categories != null && product.Categories.Any())
+            {
+                <div class="mb-2">
+                    @foreach (var category in product.Categories)
+                    {
+                        <a href="/category/@category.Id" class="badge text-bg-secondary text-decoration-none me-1">@category.Name</a>
+                    }
+                </div>
+            }
+
+            <!-- Título e Descrição Curta -->
+            <h1 class="display-5 fw-bolder mb-2">@product.Name</h1>
+            <p class="lead text-muted mb-4">@product.ShortDescription</p>
+
+            <!-- Preço -->
+            <div class="mb-4">
+                <span class="fs-1 fw-bold text-primary">@product.Price.ToString("C")</span>
+            </div>
+
+            <!-- Formulário de Compra / Status de Estoque -->
+            <div class="mb-4 bg-light p-4 rounded">
+                @if (product.Stock > 0)
+                {
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge bg-success px-3 py-2 fs-6">
+                            <i class="bi bi-check-circle me-1"></i> Em Estoque (@product.Stock disponíveis)
+                        </span>
+                    </div>
+
+                    <form method="post" asp-page-handler="AddToCart" class="d-flex gap-3 align-items-center">
+                        <input type="hidden" name="productId" value="@product.Id" />
+                        
+                        <div class="input-group" style="width: 130px;">
+                            <span class="input-group-text">Qtd</span>
+                            <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1" max="@product.Stock" aria-label="Quantidade" />
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
+                            <i class="bi bi-cart-plus"></i> Adicionar ao Carrinho
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge bg-danger px-3 py-2 fs-6">
+                            <i class="bi bi-x-circle me-1"></i> Esgotado
+                        </span>
+                    </div>
+                    <button class="btn btn-outline-secondary btn-lg w-100 mt-2" disabled>Produto Indisponível</button>
+                }
+            </div>
+
+            <!-- Descrição Completa -->
+            <div class="mt-5">
+                <h4 class="fw-bold border-bottom pb-2 mb-3">Detalhes do Produto</h4>
+                <div class="product-description text-break">
+                    <!-- Usar Html.Raw() caso sua string Description contenha tags HTML (ex: gerado por um Rich Text Editor). 
+                         Atenção: Certifique-se de sanitizar o HTML no backend antes de salvar para evitar XSS. -->
+                    @Html.Raw(product.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para trocar a imagem principal ao clicar na miniatura -->
+@section Scripts {
+    <script>
+        function changeMainImage(imageUrl) {
+            const mainImage = document.getElementById('mainProductImage');
+            if (mainImage) {
+                // Adiciona um leve fade para a transição
+                mainImage.style.opacity = 0.5;
+                setTimeout(() => {
+                    mainImage.src = imageUrl;
+                    mainImage.style.opacity = 1;
+                }, 150);
+            }
+        }
+    </script>
+}
