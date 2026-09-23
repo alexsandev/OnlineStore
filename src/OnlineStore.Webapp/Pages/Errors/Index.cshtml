@@ -1,0 +1,18 @@
+﻿@page "{statusCode:int?}"
+@model OnlineStore.Webapp.Pages.Errors.IndexModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-1 text-danger">@Model.Code</h1>
+    <h2>@Model.Title</h2>
+    <p class="lead">@Model.Message</p>
+
+    @if (Model.ShowOriginalPath)
+    {
+        <p class="text-muted font-monospace small">Caminho requisitado: @Model.OriginalPath</p>
+    }
+
+    <a asp-page="/Index" class="btn btn-primary mt-3">Voltar à Página Inicial</a>
+</div>
