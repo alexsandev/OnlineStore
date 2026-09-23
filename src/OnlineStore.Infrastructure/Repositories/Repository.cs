@@ -40,7 +40,7 @@ namespace OnlineStore.Infrastructure.Repositories
             var pageNumber = pr.PageNumber;
             var pageSize = pr.PageSize;
             var totalItems = _context.Set<T>().Count();
-            var items = await _context.Set<T>().Skip(pr.PageNumber - 1).Take(pr.PageSize).AsNoTracking().ToListAsync(ct);
+            var items = await _context.Set<T>().Skip((pr.PageNumber - 1) * pr.PageSize).Take(pr.PageSize).AsNoTracking().ToListAsync(ct);
             return new PageResult<T>(items, totalItems, pageNumber, pageSize);
         }
 
