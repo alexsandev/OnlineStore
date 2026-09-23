@@ -10,7 +10,6 @@ namespace OnlineStore.Webapp.Pages.Products
 
         private readonly IProductAppService _service;
 
-        [BindProperty]
         public ProductPageDTO ProductPage { get; set; } = null!;
 
         public IndexModel(IProductAppService service)
@@ -18,9 +17,9 @@ namespace OnlineStore.Webapp.Pages.Products
             _service = service;
         }
 
-        public async Task OnGet(CancellationToken ct)
+        public async Task OnGet(CancellationToken ct, [FromQuery]int page = 1,[FromQuery]int size = 12)
         {
-            var productPage = await _service.GetProductPageAsync(1, 10, ct);
+            var productPage = await _service.GetProductPageAsync(page, size, ct);
 
             ProductPage = productPage;
         }
