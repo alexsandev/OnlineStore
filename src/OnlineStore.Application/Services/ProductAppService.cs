@@ -31,12 +31,20 @@ namespace OnlineStore.Application.Services
 
             return new ProductPageDTO()
             {
+                CurrentPage = pageResult.PageNumber,
+                CurrentSize = pageResult.PageSize,
                 TotalItems = (int)pageResult.TotalItems,
                 TotalPages = pageResult.TotalPages,
                 HasNextPage = pageResult.HasNextPage,
                 HasPreviousPage = pageResult.HasPreviousPage,
                 Items = pageResult.Items.Select(p => p.ToProductDto()).ToList()
             };
+        }
+
+        public async Task<ProductDto?> GetProductByIdAsync(long id, CancellationToken ct)
+        {
+            var product = await _repository.GetAsync(id, ct);
+            return product?.ToProductDto();
         }
     }
 }

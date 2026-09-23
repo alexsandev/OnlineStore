@@ -6,5 +6,6 @@ namespace OnlineStore.Application.Interfaces
     {
         Task<ProductDto> RegisterProductAsync(ProductDto createProductDto, CancellationToken ct);
         Task<ProductPageDTO> GetProductPageAsync(int pageNumber, int pageSize, CancellationToken ct);
+        Task<ProductDto?> GetProductByIdAsync(long id, CancellationToken ct);
     }
 }
