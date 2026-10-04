@@ -1,5 +1,6 @@
 ﻿using OnlineStore.Application.DTOs;
 using OnlineStore.Domain.Entities;
+using OnlineStore.Domain.Pagination;
 
 namespace OnlineStore.Application.Mapping
 {
@@ -33,6 +34,25 @@ namespace OnlineStore.Application.Mapping
             );
 
             return product;
+        }
+
+        public static ProductsPageRequest ToPageRequest(this ProductsFiltersDTO filters)
+        {
+            return new ProductsPageRequest()
+            {
+                PageNumber = filters.PageNumber,
+                PageSize = filters.PageSize,
+                Name = filters.Search,
+                CategoryId = filters.Category,
+                MinPrice = filters.MinPrice,
+                MaxPrice = filters.MaxPrice,
+                Order =  filters.Order switch
+                {
+                    "menorPreco" => "price_asc",
+                    "maiorPreco" => "price_desc",
+                    _ => ""
+                }
+            };
         }
     }
 }
