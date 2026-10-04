@@ -11,20 +11,62 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <!-- Barra Superior: Logo, Pesquisa e Atalhos -->
+        <div class="bg-white border-bottom box-shadow">
+            <div class="container py-3">
+                <div class="row align-items-center">
+                    <!-- Logotipo -->
+                    <div class="col-lg-2 col-md-3 col-sm-4 mb-2 mb-sm-0">
+                        <a class="navbar-brand" asp-area="" asp-page="/Index">
+                            <img src="https://placehold.co/200x50" alt="Logo" height="40" />
+                        </a>
+                    </div>
+
+                    <!-- Barra de Pesquisa -->
+                    <div class="col-lg-6 col-md-6 col-sm-12 mb-2 mb-sm-0">
+                        <form class="d-flex" method="get" asp-page="/Products/Index">
+                            <input class="form-control form-control-sm" type="search" name="search" placeholder="Pesquisar produtos..." aria-label="Pesquisar">
+                            <button class="btn btn-primary btn-sm ms-2" type="submit">Buscar</button>
+                        </form>
+                    </div>
+
+                    <!-- Atalhos: Conta, Favoritos, Carrinho -->
+                    <div class="col-lg-4 col-md-3 col-sm-8">
+                        <div class="d-flex justify-content-end gap-2">
+                            <a class="btn btn-outline-secondary btn-sm" href="~/Account" title="Minha Conta">
+                                <i class="bi bi-person"></i> Conta
+                            </a>
+                            <a class="btn btn-outline-secondary btn-sm" href="~/Favorites" title="Favoritos">
+                                <i class="bi bi-heart"></i> Favoritos
+                            </a>
+                            <a class="btn btn-primary btn-sm" href="~/Cart" title="Carrinho de Compras">
+                                <i class="bi bi-cart"></i> Carrinho
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Navegação Principal -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Online Store</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-white dropdown-toggle" href="#" id="categoriasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorias
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
+                                <li><a class="dropdown-item" asp-page="/Products/Index" asp-route-category="eletronicos">Eletrônicos</a></li>
+                                <li><a class="dropdown-item" asp-page="/Products/Index" asp-route-category="hardware">Hardware</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-page="/Products/Index">Ver Todas</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
