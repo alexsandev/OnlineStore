@@ -42,10 +42,6 @@ namespace OnlineStore.Infrastructure.Repositories
             
             var totalItems = query.Count();
 
-            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-            pageNumber = pageNumber > totalPages ? totalPages : pageNumber;
-
             var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync(ct);
 
             return new PageResult<Product>(items, totalItems, pageNumber, pageSize);

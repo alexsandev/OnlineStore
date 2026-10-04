@@ -35,12 +35,6 @@ namespace OnlineStore.Webapp.Pages.Products
             if (!IsValidPageSize()) PageSize = 12;
 
             ProductsPage = await _service.GetProductPageAsync(CreateProductsFilterDTO(), ct);
-
-            if(PageNumber > ProductsPage.TotalPages)
-            {
-                PageNumber = ProductsPage.TotalPages;
-                return RedirectToPage(CreateProductsFilterDTO());
-            }
                 
             return Page();
         }
