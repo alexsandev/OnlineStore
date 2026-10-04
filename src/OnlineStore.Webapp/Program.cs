@@ -12,27 +12,22 @@ builder.Services.AddDbContext<OnlineStoreDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"));
 });
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Errors/500");
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapStaticAssets();
-app.MapRazorPages()
-   .WithStaticAssets();
+app.MapRazorPages().WithStaticAssets();
 
 app.Run();
