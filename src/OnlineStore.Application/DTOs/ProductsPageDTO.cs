@@ -4,8 +4,10 @@ using System.Text;
 
 namespace OnlineStore.Application.DTOs
 {
-    public record ProductPageDTO
+    public record ProductsPageDTO
     {
+        public int CurrentPage { get; init; }
+        public int CurrentSize { get; init; }
         public int TotalItems { get; init; }
         public int TotalPages { get; init; }
         public bool HasNextPage { get; init; }

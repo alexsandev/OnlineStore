@@ -9,9 +9,9 @@ namespace OnlineStore.Application.Services
 {
     public class ProductAppService : IProductAppService
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IProductRepository _repository;
 
-        public ProductAppService(IRepository<Product> repository)
+        public ProductAppService(IProductRepository repository)
         {
             _repository = repository;
         }
@@ -23,20 +23,28 @@ namespace OnlineStore.Application.Services
             return product.ToProductDto();
         }
 
-        public async Task<ProductPageDTO> GetProductPageAsync(int pageNumber, int pageSize, CancellationToken ct)
+        public async Task<ProductsPageDTO> GetProductPageAsync(ProductsFiltersDTO filters, CancellationToken ct)
         {
-            var pageRequest = new PageRequest(pageNumber, pageSize);
+            var pageRequest = filters.ToPageRequest();
 
-            var pageResult = await _repository.GetPageAsync(pageRequest, ct);
+            var pageResult = await _repository.GetProductsPageWithFiltersAsync(pageRequest, ct);
 
-            return new ProductPageDTO()
+            return new ProductsPageDTO()
             {
+                CurrentPage = pageResult.PageNumber,
+                CurrentSize = pageResult.PageSize,
                 TotalItems = (int)pageResult.TotalItems,
                 TotalPages = pageResult.TotalPages,
                 HasNextPage = pageResult.HasNextPage,
                 HasPreviousPage = pageResult.HasPreviousPage,
                 Items = pageResult.Items.Select(p => p.ToProductDto()).ToList()
             };
+        }
+
+        public async Task<ProductDto?> GetProductByIdAsync(long id, CancellationToken ct)
+        {
+            var product = await _repository.GetByIdAsync(id, ct);
+            return product?.ToProductDto();
         }
     }
 }
